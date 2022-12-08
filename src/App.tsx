@@ -11,48 +11,56 @@ const Wrapper = styled.div`
   height: 100vh;
 `;
 
-const Board = styled.div`
-  background-color: ${(props) => props.theme.boardColor};
+const Boards = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(1, fr);
 `;
+
+const Board = styled.div`
+  padding-top: 30px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.boardColor};
+  min-height: 200px;
+`;
+
 const Card = styled.div`
   background-color: ${(props) => props.theme.cardColor};
+  margin-bottom: 5px;
 `;
+
+const toDos = ["a", "b", "c", "d", "e", "f"];
 
 function App() {
   const onDragEnd = () => {};
   return (
-    <Wrapper>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Wrapper>
+        <Boards>
           <Droppable droppableId="one">
             {(magic) => (
               <Board ref={magic.innerRef} {...magic.droppableProps}>
-                <Draggable draggableId="first" index={0}>
-                  {(magic) => (
-                    <Card
-                      ref={magic.innerRef}
-                      {...magic.draggableProps}
-                      //   <span>불</span>
-                    >
-                      <span {...magic.dragHandleProps}>👿</span>
-                      One
-                    </Card>
-                  )}
-                </Draggable>
-                <Draggable draggableId="second" index={1}>
-                  {(magic) => (
-                    <Card ref={magic.innerRef} {...magic.draggableProps}>
-                      <span {...magic.dragHandleProps}>👿</span>
-                      Two
-                    </Card>
-                  )}
-                </Draggable>
+                {toDos.map((toDo, index) => (
+                  <Draggable draggableId={toDo} index={index}>
+                    {(magic) => (
+                      <Card
+                        ref={magic.innerRef}
+                        {...magic.draggableProps}
+                        {...magic.dragHandleProps}
+                      >
+                        {toDo}
+                      </Card>
+                    )}
+                  </Draggable>
+                ))}
+                {magic.placeholder}
               </Board>
             )}
           </Droppable>
-        </div>
-      </DragDropContext>
-    </Wrapper>
+        </Boards>
+      </Wrapper>
+    </DragDropContext>
   );
 }
 
