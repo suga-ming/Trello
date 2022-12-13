@@ -37,7 +37,7 @@ const Area = styled.div<IAreaProps>`
 `;
 
 const Input = styled.input`
-  width: 100%;
+  width: 80%;
   height: 30px;
   border: none;
   border-radius: 5px;
@@ -47,7 +47,10 @@ const Input = styled.input`
   }
 `;
 
-const Form = styled.form``;
+const Form = styled.form`
+  display: flex;
+  justify-content: center;
+`;
 
 interface IBoard {
   toDos: ITodo[];
@@ -105,6 +108,7 @@ const Board = ({ toDos, boardId }: IBoard) => {
                 index={index}
                 toDoId={toDo.id}
                 toDoText={toDo.text}
+                boardId={boardId}
               />
             ))}
             {magic.placeholder}
