@@ -12,7 +12,7 @@ import { toDoState } from "./store/atom";
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 680px;
+  max-width: 1000px;
   width: 100%;
   margin: 0 auto;
   justify-content: center;
@@ -31,14 +31,29 @@ function App() {
   const onDragEnd = (info: DropResult) => {
     console.log(info);
     const { destination, draggableId, source } = info;
+    if (!destination) return;
     if (destination?.droppableId == source.droppableId) {
-      setToDos((oldToDos) => {
-        const boardCopy = [...oldToDos[source.droppableId]];
+      setToDos((allBoards) => {
+        const boardCopy = [...allBoards[source.droppableId]];
         boardCopy.splice(source.index, 1);
         boardCopy.splice(destination?.index, 0, draggableId);
         return {
-          ...oldToDos,
+          ...allBoards,
           [source.droppableId]: boardCopy,
+        };
+      });
+    }
+
+    if (destination?.droppableId !== source.droppableId) {
+      setToDos((allBoards) => {
+        const destinationCopy = [...allBoards[destination.droppableId]];
+        const sourceCopy = [...allBoards[source.droppableId]];
+        sourceCopy.splice(source.index, 1);
+        destinationCopy.splice(destination?.index, 0, draggableId);
+        return {
+          ...allBoards,
+          [destination?.droppableId]: destinationCopy,
+          [source.droppableId]: sourceCopy,
         };
       });
     }

@@ -7,22 +7,26 @@ interface IDraggabbleCard {
   index: number;
 }
 
-const Card = styled.div`
-  background-color: ${(props) => props.theme.cardColor};
-  margin-bottom: 5px;
-  height: 25px;
+const Card = styled.div<{ isDragging: boolean }>`
+  background-color: ${(props) =>
+    props.isDragging ? "#9980FA" : props.theme.cardColor};
+  margin-bottom: 10px;
+  height: 40px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: ${(props) =>
+    props.isDragging ? "2px 0px 5px rgba(0,0,0,0.1)" : "none"};
 `;
 
 const DraggabbleCard = ({ toDo, index }: IDraggabbleCard) => {
   return (
     <div>
       <Draggable key={toDo} draggableId={toDo} index={index}>
-        {(magic) => (
+        {(magic, snapshot) => (
           <Card
+            isDragging={snapshot.isDragging}
             ref={magic.innerRef}
             {...magic.draggableProps}
             {...magic.dragHandleProps}

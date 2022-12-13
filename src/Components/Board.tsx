@@ -4,10 +4,13 @@ import DraggabbleCard from "./DraggabbleCard";
 
 const Wrapper = styled.div`
   padding-top: 30px;
-  padding: 10px 10px;
+  padding: 10px 0px;
   border-radius: 10px;
   background-color: ${(props) => props.theme.boardColor};
-  min-height: 200px;
+  min-height: 350px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.div`
@@ -17,9 +20,26 @@ const Title = styled.div`
   margin-bottom: 10px;
 `;
 
+const Area = styled.div<IAreaProps>`
+  background-color: ${(props) =>
+    props.isDraggingOver
+      ? "#d2dae2"
+      : props.isDraggingFromThis
+      ? "#808e9b"
+      : "transparent"};
+  flex-grow: 1;
+  transition: background-color 0.3s ease-in-out;
+  padding: 20px;
+`;
+
 interface IBoard {
   toDos: string[];
   boardId: string;
+}
+
+interface IAreaProps {
+  isDraggingOver: boolean;
+  isDraggingFromThis: boolean;
 }
 
 const Board = ({ toDos, boardId }: IBoard) => {
@@ -27,13 +47,18 @@ const Board = ({ toDos, boardId }: IBoard) => {
     <Wrapper>
       <Title>{boardId}</Title>
       <Droppable droppableId={boardId}>
-        {(magic) => (
-          <div ref={magic.innerRef} {...magic.droppableProps}>
+        {(magic, snapshot) => (
+          <Area
+            isDraggingOver={snapshot.isDraggingOver}
+            isDraggingFromThis={Boolean(snapshot.draggingFromThisWith)}
+            ref={magic.innerRef}
+            {...magic.droppableProps}
+          >
             {toDos.map((toDo, index) => (
               <DraggabbleCard key={toDo} toDo={toDo} index={index} />
             ))}
             {magic.placeholder}
-          </div>
+          </Area>
         )}
       </Droppable>
     </Wrapper>
