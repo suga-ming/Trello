@@ -10,6 +10,13 @@ const Wrapper = styled.div`
   min-height: 200px;
 `;
 
+const Title = styled.div`
+  color: #485460;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+`;
+
 interface IBoard {
   toDos: string[];
   boardId: string;
@@ -18,7 +25,7 @@ interface IBoard {
 const Board = ({ toDos, boardId }: IBoard) => {
   return (
     <Wrapper>
-      <h1>{boardId}</h1>
+      <Title>{boardId}</Title>
       <Droppable droppableId={boardId}>
         {(magic) => (
           <div ref={magic.innerRef} {...magic.droppableProps}>

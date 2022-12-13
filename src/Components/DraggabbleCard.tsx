@@ -10,6 +10,11 @@ interface IDraggabbleCard {
 const Card = styled.div`
   background-color: ${(props) => props.theme.cardColor};
   margin-bottom: 5px;
+  height: 25px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const DraggabbleCard = ({ toDo, index }: IDraggabbleCard) => {
