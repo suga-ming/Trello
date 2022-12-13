@@ -3,7 +3,8 @@ import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
 interface IDraggabbleCard {
-  toDo: string;
+  toDoId: number;
+  toDoText: string;
   index: number;
 }
 
@@ -18,12 +19,22 @@ const Card = styled.div<{ isDragging: boolean }>`
   justify-content: center;
   box-shadow: ${(props) =>
     props.isDragging ? "2px 0px 5px rgba(0,0,0,0.1)" : "none"};
+  /* position: relative; */
 `;
 
-const DraggabbleCard = ({ toDo, index }: IDraggabbleCard) => {
+// const Delete = styled.div`
+//   position: absolute;
+//   right: 10px;
+//   top: 5px;
+//   font-size: 20px;
+//   color: red;
+//   cursor: pointer;
+// `;
+
+const DraggabbleCard = ({ toDoId, toDoText, index }: IDraggabbleCard) => {
   return (
     <div>
-      <Draggable key={toDo} draggableId={toDo} index={index}>
+      <Draggable draggableId={toDoId + ""} index={index}>
         {(magic, snapshot) => (
           <Card
             isDragging={snapshot.isDragging}
@@ -31,7 +42,8 @@ const DraggabbleCard = ({ toDo, index }: IDraggabbleCard) => {
             {...magic.draggableProps}
             {...magic.dragHandleProps}
           >
-            {toDo}
+            {toDoText}
+            {/* <Delete>x</Delete> */}
           </Card>
         )}
       </Draggable>

@@ -1,5 +1,9 @@
+import { useRef } from "react";
 import { Droppable } from "react-beautiful-dnd";
+import { useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { ITodo, toDoState } from "../store/atom";
 import DraggabbleCard from "./DraggabbleCard";
 
 const Wrapper = styled.div`
@@ -32,8 +36,21 @@ const Area = styled.div<IAreaProps>`
   padding: 20px;
 `;
 
+const Input = styled.input`
+  width: 100%;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  background-color: #9980fa;
+  &::placeholder {
+    color: white;
+  }
+`;
+
+const Form = styled.form``;
+
 interface IBoard {
-  toDos: string[];
+  toDos: ITodo[];
   boardId: string;
 }
 
@@ -42,10 +59,38 @@ interface IAreaProps {
   isDraggingFromThis: boolean;
 }
 
+interface IForm {
+  toDo: string;
+}
+
 const Board = ({ toDos, boardId }: IBoard) => {
+  const setToDos = useSetRecoilState(toDoState);
+  const { register, setValue, handleSubmit } = useForm<IForm>();
+  const onValid = ({ toDo }: IForm) => {
+    const newToDo = {
+      id: Date.now(),
+      text: toDo,
+    };
+    setToDos((allBoards) => {
+      return {
+        ...allBoards,
+        [boardId]: [newToDo, ...allBoards[boardId]],
+      };
+    });
+    setValue("toDo", "");
+  };
+
   return (
     <Wrapper>
       <Title>{boardId}</Title>
+      <Form onSubmit={handleSubmit(onValid)}>
+        <Input
+          {...register("toDo", { required: true })}
+          type="text"
+          placeholder={`   Add task on ${boardId}`}
+        ></Input>
+      </Form>
+
       <Droppable droppableId={boardId}>
         {(magic, snapshot) => (
           <Area
@@ -55,7 +100,12 @@ const Board = ({ toDos, boardId }: IBoard) => {
             {...magic.droppableProps}
           >
             {toDos.map((toDo, index) => (
-              <DraggabbleCard key={toDo} toDo={toDo} index={index} />
+              <DraggabbleCard
+                key={toDo.id}
+                index={index}
+                toDoId={toDo.id}
+                toDoText={toDo.text}
+              />
             ))}
             {magic.placeholder}
           </Area>
