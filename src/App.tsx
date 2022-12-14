@@ -6,6 +6,7 @@ import {
 } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import AddBoard from "./Components/AddBoard";
 import Board from "./Components/Board";
 import DraggabbleCard from "./Components/DraggabbleCard";
 import { toDoState } from "./store/atom";
@@ -13,17 +14,24 @@ import { toDoState } from "./store/atom";
 const Wrapper = styled.div`
   display: flex;
   max-width: 1000px;
-  width: 100%;
   margin: 0 auto;
   justify-content: center;
+  margin-top: 70px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  height: 100vh;
+  margin-top: 50px;
+  margin-bottom: 20px;
 `;
 
 const Boards = styled.div`
   width: 100%;
   display: grid;
-  gap: 10px;
+  gap: 20px;
   grid-template-columns: repeat(3, 1fr);
 `;
 
@@ -78,19 +86,22 @@ function App() {
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="boards" direction="horizontal" type="board">
         {(magic) => (
-          <Wrapper>
-            <Boards ref={magic.innerRef} {...magic.droppableProps}>
-              {Object.keys(toDos).map((boardId, index) => (
-                <Board
-                  boardId={boardId}
-                  key={boardId}
-                  toDos={toDos[boardId]}
-                  index={index}
-                />
-              ))}
-              {magic.placeholder}
-            </Boards>
-          </Wrapper>
+          <Container>
+            <AddBoard />
+            <Wrapper>
+              <Boards ref={magic.innerRef} {...magic.droppableProps}>
+                {Object.keys(toDos).map((boardId, index) => (
+                  <Board
+                    boardId={boardId}
+                    key={boardId}
+                    toDos={toDos[boardId]}
+                    index={index}
+                  />
+                ))}
+                {magic.placeholder}
+              </Boards>
+            </Wrapper>
+          </Container>
         )}
       </Droppable>
     </DragDropContext>
