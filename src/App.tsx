@@ -64,13 +64,23 @@ function App() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Wrapper>
-        <Boards>
-          {Object.keys(toDos).map((boardId) => (
-            <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
-          ))}
-        </Boards>
-      </Wrapper>
+      <Droppable droppableId="boards" direction="horizontal" type="board">
+        {(magic) => (
+          <Wrapper>
+            <Boards ref={magic.innerRef} {...magic.droppableProps}>
+              {Object.keys(toDos).map((boardId, index) => (
+                <Board
+                  boardId={boardId}
+                  key={boardId}
+                  toDos={toDos[boardId]}
+                  index={index}
+                />
+              ))}
+              {magic.placeholder}
+            </Boards>
+          </Wrapper>
+        )}
+      </Droppable>
     </DragDropContext>
   );
 }
