@@ -22,5 +22,5 @@ export const toDoState = atom<IToDoState>({
     doing: [],
     done: [],
   },
-  effects_UNSTABLE: [persistAtom],
+  // effects_UNSTABLE: [persistAtom],
 });

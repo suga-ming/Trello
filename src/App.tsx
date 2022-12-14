@@ -32,6 +32,18 @@ function App() {
     console.log(info);
     const { destination, draggableId, source } = info;
     if (!destination) return;
+
+    if (destination.droppableId == "boards" && source.droppableId == "boards") {
+      setToDos((boards) => {
+        const arrs = Object.entries(boards);
+        const before = arrs[source.index];
+        arrs.splice(source.index, 1);
+        arrs.splice(destination.index, 0, before);
+        const editBoards = Object.fromEntries(arrs);
+        return { ...editBoards };
+      });
+    }
+
     if (destination?.droppableId == source.droppableId) {
       setToDos((allBoards) => {
         const boardCopy = [...allBoards[source.droppableId]];
