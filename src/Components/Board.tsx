@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -15,6 +14,7 @@ const Wrapper = styled.div`
   width: 300px;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const Title = styled.div`
@@ -52,6 +52,15 @@ const Form = styled.form`
   justify-content: center;
 `;
 
+const Delete = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  font-size: 20px;
+  color: red;
+  cursor: pointer;
+`;
+
 interface IBoard {
   toDos: ITodo[];
   boardId: string;
@@ -84,6 +93,17 @@ const Board = ({ toDos, boardId, index }: IBoard) => {
     setValue("toDo", "");
   };
 
+  const onDelete = () => {
+    setToDos((todos) => {
+      const copiedTodos = Object.entries(todos);
+      const filterBoards = copiedTodos.filter(
+        (entryBoard) => entryBoard[0] !== boardId
+      );
+      const newBoards = Object.fromEntries(filterBoards);
+      return newBoards;
+    });
+  };
+
   return (
     <Draggable draggableId={boardId + ""} index={index}>
       {(magic, snapshot) => (
@@ -93,6 +113,7 @@ const Board = ({ toDos, boardId, index }: IBoard) => {
           {...magic.draggableProps}
         >
           <Title>{boardId}</Title>
+          <Delete onClick={onDelete}>x</Delete>
           <Form onSubmit={handleSubmit(onValid)}>
             <Input
               {...register("toDo", { required: true })}
