@@ -1,11 +1,14 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ToDo from "./ToDo";
 
 const Router = () => {
-    return <BrowserRouter>
-        <Routes>
-            {/* 여기에 라우터 등록 */}
-        </Routes>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ToDo />}></Route>
+      </Routes>
     </BrowserRouter>
-}
+  );
+};
 
-export default Router
+export default Router;
