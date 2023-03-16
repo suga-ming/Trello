@@ -3,7 +3,7 @@ import ToDo from "./ToDo";
 
 const Router = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="Trello">
       <Routes>
         <Route path="/" element={<ToDo />}></Route>
       </Routes>
