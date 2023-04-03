@@ -23,6 +23,7 @@ const Input = styled.input`
   height: 40px;
   border: none;
   border-radius: 5px;
+  padding-left: 10px;
 `;
 
 interface INew {
@@ -49,7 +50,7 @@ const AddBoard = () => {
         <Text>New Board</Text>
         <Input
           {...register("text")}
-          placeholder="  여기에 입력해주세요"
+          placeholder="여기에 입력해주세요"
           type="text"
         ></Input>
       </Form>
