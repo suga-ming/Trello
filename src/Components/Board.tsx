@@ -42,6 +42,8 @@ const Input = styled.input`
   border: none;
   border-radius: 5px;
   background-color: #9980fa;
+  padding-left: 10px;
+  color: white;
   &::placeholder {
     color: white;
   }
@@ -118,7 +120,7 @@ const Board = ({ toDos, boardId, index }: IBoard) => {
             <Input
               {...register("toDo", { required: true })}
               type="text"
-              placeholder={`   Add task on ${boardId}`}
+              placeholder={`Add task on ${boardId}`}
             ></Input>
           </Form>
 
